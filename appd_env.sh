@@ -7,5 +7,5 @@ export APPDYNAMICS_AGENT_APPLICATION_NAME=$(sudo /opt/elasticbeanstalk/bin/get-c
 export APPDYNAMICS_AGENT_TIER_NAME=$(sudo /opt/elasticbeanstalk/bin/get-config container -k environment_name)
 export APPDYNAMICS_SIM_ENABLED=$(sudo /opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_SIM_ENABLED)
 
-JAVA_OPTS=$(/opt/elasticbeanstalk/bin/get-config environment -k JAVA_OPTS)
+JAVA_OPTS=$(sudo /opt/elasticbeanstalk/bin/get-config environment -k JAVA_OPTS)
 export JAVA_OPTS="$JAVA_OPTS -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME"
