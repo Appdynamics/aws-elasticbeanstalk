@@ -63,7 +63,7 @@ then
     echo "APPDYNAMICS_AGENT_TIER_NAME=$APPDYNAMICS_AGENT_TIER_NAME" >> /etc/bash.bashrc
 else
     echo "APPDYNAMICS_AGENT_TIER_NAME not set. Using Environment Name."
-    echo "APPDYNAMICS_AGENT_TIER_NAME=$(/opt/elasticbeanstalk/bin/get-config container -k environment_name > /dev/null 2>&1)" >> /etc/bash.bashrc
+    echo "APPDYNAMICS_AGENT_TIER_NAME=$(/opt/elasticbeanstalk/bin/get-config container -k environment_name 2>&1)" >> /etc/bash.bashrc
 fi
 
 if [[ -v JAVA_OPTS ]]
