@@ -79,7 +79,8 @@ fi
 
 if [ -n "${JAVA_OPTS:+1}" ]
 then
-    echo "JAVA_OPTS=$JAVA_OPTS -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME" >> /etc/environment
+    JAVA_OPTS=$JAVA_OPTS -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME
+    echo "JAVA_OPTS=$JAVA_OPTS" >> /etc/environment
     echo "export JAVA_OPTS=$JAVA_OPTS" >> /etc/profile.d/appd_profile.sh
 else
     echo "JAVA_OPTS not set. Exiting."
