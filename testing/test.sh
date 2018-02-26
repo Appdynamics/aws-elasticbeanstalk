@@ -20,5 +20,5 @@ cp -r /home/michi/Documents/business/appd/dev/aws/aws-elasticbeanstalk/java/.ebe
 cp /home/michi/Documents/business/appd/dev/aws/aws-elasticbeanstalk/java/.ebextensions/appd_bashrc.config ./.ebextensions
 git add ./
 git commit -m "eb"
-eb create $ENV_NAME -i $INSTANCE
+eb create --timeout 15 $ENV_NAME -i $INSTANCE
 eb terminate $ENV_NAME --force
