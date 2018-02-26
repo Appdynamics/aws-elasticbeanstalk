@@ -8,7 +8,7 @@ APPDYNAMICS_AGENT_ACCOUNT_NAME=$(/opt/elasticbeanstalk/bin/get-config environmen
 APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY 2>&1)
 APPDYNAMICS_AGENT_APPLICATION_NAME=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_AGENT_APPLICATION_NAME 2>&1)
 APPDYNAMICS_AGENT_TIER_NAME=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_AGENT_TIER_NAME 2>&1)
-JAVA_OPTS=$(/opt/elasticbeanstalk/bin/get-config environment -k JAVA_OPTS 2>&1)
+JAVA_OPTS="$(/opt/elasticbeanstalk/bin/get-config environment -k JAVA_OPTS 2>&1)"
 
 if [ -n "${APPDYNAMICS_CONTROLLER_HOST_NAME:+1}" ]
 then
@@ -79,7 +79,6 @@ fi
 
 if [ -n "${JAVA_OPTS:+1}" ]
 then
-    JAVA_OPTS=$JAVA_OPTS -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME
     echo "JAVA_OPTS=$JAVA_OPTS" >> /etc/environment
     echo "export JAVA_OPTS=$JAVA_OPTS" >> /etc/profile.d/appd_profile.sh
 else
