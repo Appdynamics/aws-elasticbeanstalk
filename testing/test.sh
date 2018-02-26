@@ -14,7 +14,7 @@ git clone https://github.com/cloudfoundry-samples/spring-music
 cd spring-music
 eb init $APP_NAME -p $PLATFORM -r $REGION -k $KEY
 echo "build: gradle clean assemble" >> Buildfile
-echo 'web: java $JAVA_OPTS -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/spring-music.jar' >> Procfile
+echo 'web: java -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/spring-music.jar' >> Procfile
 mkdir .ebextensions
 cp -r /home/michi/Documents/business/appd/dev/aws/aws-elasticbeanstalk/java/.ebextensions/nginx ./.ebextensions
 cp /home/michi/Documents/business/appd/dev/aws/aws-elasticbeanstalk/java/.ebextensions/appd_bashrc.config ./.ebextensions
