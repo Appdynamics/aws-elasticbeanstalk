@@ -86,4 +86,6 @@ sed -i "s@info@debug@" /opt/appdynamics/machineagent/conf/logging/log4j.xml
 
 chmod 755 /etc/profile.d/appd_profile.sh
 
+nohup /opt/appdynamics/appd-machine.sh &
+
 exit 0
