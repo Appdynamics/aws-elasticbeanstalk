@@ -77,4 +77,6 @@ fi
 
 sed -i "s@\(.*java \)\(.*\)@\1-javaagent:/opt/appdynamics/appagent/javaagent.jar -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME -Dappdynamics.agent.tierName=$APPDYNAMICS_AGENT_TIER_NAME \2@" /var/elasticbeanstalk/staging/supervisor/application.conf
 
+chmod 755 /etc/profile.d/appd_profile.sh
+
 exit 0

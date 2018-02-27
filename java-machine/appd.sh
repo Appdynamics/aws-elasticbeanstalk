@@ -75,6 +75,15 @@ else
     echo "export APPDYNAMICS_AGENT_TIER_NAME=$APPDYNAMICS_AGENT_TIER_NAME" >> /etc/profile.d/appd_profile.sh
 fi
 
+echo "APPDYNAMICS_AGENT_UNIQUE_HOST_ID=$HOSTNAME" >> /etc/environment
+echo "export APPDYNAMICS_AGENT_UNIQUE_HOST_ID=$HOSTNAME" >> /etc/profile.d/appd_profile.sh
+echo "APPDYNAMICS_MACHINE_HIERARCHY_PATH=\"$APPDYNAMICS_AGENT_TIER_NAME|\""
+echo "export APPDYNAMICS_MACHINE_HIERARCHY_PATH=\"$APPDYNAMICS_AGENT_TIER_NAME|\"" >> /etc/profile.d/appd_profile.sh
+
 sed -i "s@\(.*java \)\(.*\)@\1-javaagent:/opt/appdynamics/appagent/javaagent.jar -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME -Dappdynamics.agent.tierName=$APPDYNAMICS_AGENT_TIER_NAME \2@" /var/elasticbeanstalk/staging/supervisor/application.conf
+
+sed -i "s@info@debug@" /opt/appdynamics/machineagent/conf/logging/log4j.xml
+
+chmod 755 /etc/profile.d/appd_profile.sh
 
 exit 0
