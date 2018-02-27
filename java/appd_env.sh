@@ -76,7 +76,6 @@ else
     echo "export APPDYNAMICS_AGENT_TIER_NAME=$APPDYNAMICS_AGENT_TIER_NAME" >> /etc/profile.d/appd_profile.sh
 fi
 
-cp /etc/profile.d/appd_profile.sh /tmp/appd_env
-chmod 755 /tmp/appd_env
+sed -i "s@\(.*java \)\(.*\)@\1-javaagent:/opt/appdynamics/appagent/javaagent.jar -Dappdynamics.agent.reuse.nodeName=true -Dappdynamics.agent.reuse.nodeName.prefix=$APPDYNAMICS_AGENT_TIER_NAME -Dappdynamics.agent.tierName=$APPDYNAMICS_AGENT_TIER_NAME \2@" /var/elasticbeanstalk/staging/supervisor/application.conf
 
 exit 0
