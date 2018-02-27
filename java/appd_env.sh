@@ -76,7 +76,7 @@ else
     echo "export APPDYNAMICS_AGENT_TIER_NAME=$APPDYNAMICS_AGENT_TIER_NAME" >> /etc/profile.d/appd_profile.sh
 fi
 
-cp /etc/environment /tmp/appd_env
-chmod 755 /tmp/appd_env
+cp /etc/profile.d/appd_profile.sh /tmp/appd_env.sh
+chmod 755 /tmp/appd_env.sh
 
 exit 0
