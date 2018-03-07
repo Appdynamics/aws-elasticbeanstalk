@@ -22,6 +22,7 @@ then
 else
     "AppDynamics App Agent does not exist. Exiting."
     exit 1
+fi
 
 if [ -n "${APPDYNAMICS_CONTROLLER_HOST_NAME:+1}" ]
 then
@@ -151,7 +152,6 @@ then
 else
     echo "AppDynamics Machine Agent does not exist. Skipping."
 fi
-
 
 chmod 755 /etc/profile.d/appd_profile.sh
 
