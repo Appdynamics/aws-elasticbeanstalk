@@ -124,10 +124,10 @@ then
 
     while [[ !(\$(pgrep -f javaagent) -gt 0) ]]
     do
-      sleep 10
+      sleep 20
     done
 
-    sleep 60
+    sleep 180
 
     source /etc/profile.d/appd_profile.sh
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
@@ -147,6 +147,7 @@ then
     else
         echo "AppDynamics Analytics not enabled cause either APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME or APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT is missing."
     fi
+    sed -i "s@info@debug@" /opt/appdynamics/machineagent/conf/logging/log4j.xml #debug flag
     chmod 755 /opt/appdynamics/appd-machine.sh
     /opt/appdynamics/appd-machine.sh < /dev/null &> /dev/null & disown
 else
