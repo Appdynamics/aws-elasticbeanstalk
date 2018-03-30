@@ -122,6 +122,21 @@ then
         echo "export APPDYNAMICS_SIM_ENABLED=false" >> /etc/profile.d/appd_profile.sh
     fi
     echo "#!/bin/bash
+    FINE=0
+
+    function checkError {
+        sleep 60
+        if [ ! -z $(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
+        then
+            pkill -f machineagent
+            sleep 10
+            find /opt/appdynamics/machineagent/ -iname *.log -exec /bin/bash -c \"rm -f {}\" \\;
+            find /opt/appdynamics/machineagent/ -iname *.pid -exec /bin/bash -c \"rm -f {}\" \\;
+            /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
+        else
+            FINE=1
+        fi
+    }
 
     while [[ !(\$(pgrep -f javaagent) -gt 0) ]]
     do
@@ -129,19 +144,12 @@ then
     done
 
     source /etc/profile.d/appd_profile.sh
-
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
 
-    sleep 120
-
-    if [ ! -z $(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
-    then
-        pkill -f machineagent
-        sleep 10
-        find /opt/appdynamics/machineagent/ -iname *.log -exec /bin/bash -c \"rm -f {}\" \\;
-        find /opt/appdynamics/machineagent/ -iname *.pid -exec /bin/bash -c \"rm -f {}\" \\;
-    fi
-
+    while [[ FINE != 1 ]]
+    do
+      checkError
+    done
 
     exit 0
     " > /opt/appdynamics/appd-machine.sh
