@@ -2,6 +2,7 @@
 
 PLATFORM=$(echo $PWD | sed -e 's/.*aws-elasticbeanstalk\/\(\w*\)-*.*\/testing.*/\1/g')
 BEANSTALK_DIR=$(echo $PWD | sed -e 's/\(.*aws-elasticbeanstalk\)\/.*/\1/g')
+TYPE="java-machine-analytics"
 
 function checkPrerequs {
   which eb &> /dev/null
@@ -25,12 +26,15 @@ function usage {
   -k <KEY> Optional - If not set no SSH key auth will be possible\n\t\t\
   -c <APPDYNAMICS_CONTROLLER_HOST_NAME> will be prompted if not provided\n\t\t\
   -p <APPDYNAMICS_CONTROLLER_PORT> will be prompted if not provided\n\t\t\
-  -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY> will be prompted if not provided\n\t\t"
+  -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY> will be prompted if not provided\n\t\t\
+  -s <APPDYNAMICS_SIM_ENABLED> will be false if not provided\n\t\t\
+  -g <APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME> will be prompted if not provided\n\t\t\
+  -E <APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT> will be prompted if not provided\n"
   exit 1
 }
 
 function getOptions {
-  while getopts ":a:e:k:r:i:b:c:p:K:h" opt;
+  while getopts ":a:e:k:r:i:b:c:p:K:s:g:E:h" opt;
   do
    case "${opt}" in
      a) APP_NAME=${OPTARG}
@@ -59,6 +63,15 @@ function getOptions {
         ;;
      K) APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${OPTARG}
         echo "APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}"
+        ;;
+     s) APPDYNAMICS_SIM_ENABLED=${OPTARG}
+        echo "APPDYNAMICS_SIM_ENABLED=${APPDYNAMICS_SIM_ENABLED}"
+        ;;
+     g) APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME=${OPTARG}
+        echo "APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME=${APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME}"
+        ;;
+     E) APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT=${OPTARG}
+        echo "APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT=${APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT}"
         ;;
      h) usage
         ;;
@@ -94,6 +107,14 @@ function checkOptions {
     echo -e "APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY not set please provide it:"
     read APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY
   fi
+  if [[ -z ${APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME} ]]; then
+    echo -e "APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME not set please provide it:"
+    read APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME
+  fi
+  if [[ -z ${APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT} ]]; then
+    echo -e "APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT not set please provide it:"
+    read APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT
+  fi
 }
 
 checkPrerequs
@@ -119,13 +140,18 @@ echo "build: gradle clean assemble" >> Buildfile
 echo 'web: java -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/spring-music.jar' >> Procfile
 mkdir .ebextensions
 cp -r $BEANSTALK_DIR/_common/.ebextensions/nginx ./.ebextensions
-cp $BEANSTALK_DIR/$PLATFORM/.ebextensions/appd.config ./.ebextensions
+cp $BEANSTALK_DIR/$TYPE/.ebextensions/appd.config ./.ebextensions
 
 sed -i "s@APPDYNAMICS_CONTROLLER_HOST_NAME:@APPDYNAMICS_CONTROLLER_HOST_NAME: \"$APPDYNAMICS_CONTROLLER_HOST_NAME\"@" ./.ebextensions/appd.config
 sed -i "s@APPDYNAMICS_CONTROLLER_PORT:@APPDYNAMICS_CONTROLLER_PORT: \"$APPDYNAMICS_CONTROLLER_PORT\"@" ./.ebextensions/appd.config
 sed -i "s@APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:@APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: \"$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY\"@" ./.ebextensions/appd.config
 sed -i "s@APPDYNAMICS_AGENT_APPLICATION_NAME:@APPDYNAMICS_AGENT_APPLICATION_NAME: \"$APP_NAME\"@" ./.ebextensions/appd.config
+sed -i "s@#APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME:@APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME: \"$APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME\"@" ./.ebextensions/appd.config
+sed -i "s@#APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT:@APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT: \"$APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT\"@" ./.ebextensions/appd.config
 
+if [ -n "${APPDYNAMICS_SIM_ENABLED:+1}" ]; then
+    sed -i "s@#APPDYNAMICS_SIM_ENABLED:@APPDYNAMICS_SIM_ENABLED: $APPDYNAMICS_SIM_ENABLED@" ./.ebextensions/appd.config
+fi
 
 git add ./
 git commit -m "eb"

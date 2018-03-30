@@ -127,7 +127,7 @@ then
       sleep 20
     done
 
-    sleep 180
+    sleep 600
 
     source /etc/profile.d/appd_profile.sh
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
