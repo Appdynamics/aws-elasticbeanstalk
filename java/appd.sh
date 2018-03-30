@@ -124,7 +124,7 @@ then
     echo "#!/bin/bash
 
     function checkError {
-        sleep 60
+        sleep 120
         if [[ ! \$(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]] && [[ \$(pgrep -f machineagent) -gt 0 ]]
         then
             exit 0
@@ -144,6 +144,8 @@ then
 
     source /etc/profile.d/appd_profile.sh
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
+
+    sleep 120
 
     while true
     do
