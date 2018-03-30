@@ -10,6 +10,7 @@ APPDYNAMICS_AGENT_TIER_NAME=$(/opt/elasticbeanstalk/bin/get-config environment -
 APPDYNAMICS_SIM_ENABLED=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_SIM_ENABLED 2>&1)
 APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME 2>&1)
 APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT=$(/opt/elasticbeanstalk/bin/get-config environment -k APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT 2>&1)
+MACHINE_ERROR="WARN ExtensionManager - Failed to start extension ServerMonitoring."
 
 rm -rf /opt/appdynamics > /dev/null 2>&1
 if [ -f /tmp/appagent.zip ]
@@ -127,10 +128,18 @@ then
       sleep 20
     done
 
-    sleep 600
-
     source /etc/profile.d/appd_profile.sh
+
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
+
+    sleep 120
+
+    if [ ! -z $(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
+    then
+        find /opt/appdynamics/machineagent/ -iname *.log -exec /bin/bash -c \"rm -f {}\" \\;
+        find /opt/appdynamics/machineagent/ -iname *.pid -exec /bin/bash -c \"rm -f {}\" \\;
+    fi
+
 
     exit 0
     " > /opt/appdynamics/appd-machine.sh
