@@ -122,19 +122,18 @@ then
         echo "export APPDYNAMICS_SIM_ENABLED=false" >> /etc/profile.d/appd_profile.sh
     fi
     echo "#!/bin/bash
-    FINE=0
 
     function checkError {
         sleep 60
-        if [ ! -z \$(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
+        if [[ ! \$(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]] && [[ \$(pgrep -f machineagent) -gt 0 ]]
         then
+            exit 0
+        else
             pkill -f machineagent
             sleep 10
             find /opt/appdynamics/machineagent/ -iname *.log -exec /bin/bash -c \"rm -f {}\" \\;
             find /opt/appdynamics/machineagent/ -iname *.pid -exec /bin/bash -c \"rm -f {}\" \\;
             /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
-        else
-            FINE=1
         fi
     }
 
@@ -146,7 +145,7 @@ then
     source /etc/profile.d/appd_profile.sh
     /opt/appdynamics/machineagent/bin/machine-agent -d -p /opt/appdynamics/machineagent/bin/machine.pid
 
-    while [[ FINE != 1 ]]
+    while true
     do
       checkError
     done
