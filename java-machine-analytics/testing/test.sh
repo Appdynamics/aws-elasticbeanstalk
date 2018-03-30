@@ -157,9 +157,9 @@ git add ./
 git commit -m "eb"
 
 if [[ -z ${INSTANCE} ]]; then
-    eb create --timeout 15 $ENV_NAME
+    eb create $ENV_NAME
 else
-    eb create --timeout 15 $ENV_NAME -i $INSTANCE
+    eb create $ENV_NAME -i $INSTANCE
 fi
 
 #eb terminate $ENV_NAME --force

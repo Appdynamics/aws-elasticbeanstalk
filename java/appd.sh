@@ -126,7 +126,7 @@ then
 
     function checkError {
         sleep 60
-        if [ ! -z $(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
+        if [ ! -z \$(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
         then
             pkill -f machineagent
             sleep 10
