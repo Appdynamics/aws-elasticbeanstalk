@@ -136,6 +136,8 @@ then
 
     if [ ! -z $(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]
     then
+        pkill -f machineagent
+        sleep 10
         find /opt/appdynamics/machineagent/ -iname *.log -exec /bin/bash -c \"rm -f {}\" \\;
         find /opt/appdynamics/machineagent/ -iname *.pid -exec /bin/bash -c \"rm -f {}\" \\;
     fi
