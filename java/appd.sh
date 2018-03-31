@@ -142,7 +142,7 @@ then
     echo "#!/bin/bash
 
     function checkError {
-        sleep 300
+        sleep 480
         if [[ ! \$(grep \"$MACHINE_ERROR\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]] && [[ \$(grep \"$MACHINE_SUCCESS\" \"/opt/appdynamics/machineagent/logs/machine-agent.log\") ]] && [[ \$(pgrep -f machineagent) -gt 0 ]]
         then
             exit 0
