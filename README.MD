@@ -77,6 +77,11 @@ The steps performed by the Extensions could vary by technology but here is a gen
 ## Important Notes
 * There is a delay of the Machine Agent Startup, so give it some time.
 
+## TODO
+* Source Rules for EB Log files
+* Other Technologies
+* Automated Jenkins testing
+
 [Environment Variables for Agent]: https://docs.appdynamics.com/display/latest/Use+Environment+Variables+for+Java+Agent+Settings
 [Analytics Agent]: https://docs.appdynamics.com/display/latest/Installing+Agent-Side+Components#InstallingAgent-SideComponents-InstallAnalyticsAgentonLinux
 [.ebextensions Documentation]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html
