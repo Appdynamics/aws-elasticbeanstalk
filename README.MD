@@ -36,6 +36,23 @@ The steps performed by the Extensions could vary by technology but here is a gen
 | APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT  | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_DEBUG                     | Will set the Agents Logging Level to Debug if true                  | No       | N/A       |
+## Deployment
+* Copy or create the `.ebextensions` Folder within your Apps root folder
+* Copy or create the `.ebextensions/appd.config` File into the previously created Folder
+* Configure the `appd.config` File
+  * Select the appropriate Agent Versions e.g.:  
+    ```
+    source: https://packages.appdynamics.com/java/4.4.0.3/AppServerAgent-4.4.0.3.zip
+    ```
+  * Configure the Environment Variables. These are the minimum required ones:  
+    ```
+    APPDYNAMICS_CONTROLLER_HOST_NAME:
+    APPDYNAMICS_CONTROLLER_PORT:
+    APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:
+    APPDYNAMICS_AGENT_APPLICATION_NAME:
+    ```
+* Deploy your Application
+
 ## Sample Deployment
 ### Linux using Testing Script
 * Make sure you have `git` and `eb` (Elastic Beanstalk CLI) installed
