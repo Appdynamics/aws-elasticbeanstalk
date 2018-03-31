@@ -35,6 +35,17 @@
   * The script will prompt if you forget to specify all required options
   * You can display the Usage Info by `./test.sh -h`
 
+### Screenshots
+* Sample Application UI
+![Sample Application UI](screenshots/java_sample_app.png)
+* Elastic Beanstalk UI
+![Elastic Beanstalk UI](screenshots/java_sample_app_eb_console.png)
+* AppDynamics Flowmap
+![AppDynamics Flowmap](screenshots/java_sample_app_appd_flowmap.png)
+* AppDynamics Server Visibility
+![AppDynamics Server Visibility](screenshots/java_sample_app_appd_server.png)
+* AppDynamics Analytics Agent
+![AppDynamics Analytics Agent](screenshots/java_sample_app_appd_analytics.png)
 ## Important Notes
 * There is a delay of the Machine Agent Startup, so give it some time.
 
