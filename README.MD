@@ -27,13 +27,14 @@
 | APPDYNAMICS_DEBUG                     | Will set the Agents Logging Level to Debug if true                  | No       | N/A       |
 ## Sample Deployment
 ### Linux
+* Make sure you have `git` and `eb` (Elastic Beanstalk CLI) installed
 * Clone this Repository `git clone https://github.com/michaelenglert/aws-elasticbeanstalk.git`
 * Navigate to the Agent Combination you want to test `cd ./aws-elasticbeanstalk/<platform>-(machine)-(analytics)/testing`
 * Execute the `test.sh` script with the corresponding options
   * e.g. `./test.sh -a <APP_NAME> -b <BASE_DIR> -e <ENV_NAME> -r <AWS_REGION> -i <AWS_INSTANCE_TYPE> -c <APPDYNAMICS_CONTROLLER_HOST_NAME> -p <APPDYNAMICS_CONTROLLER_PROTOCOL> -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY>`
   * The script will prompt if you forget to specify all required options
   * You can display the Usage Info by `./test.sh -h`
-  
+
 ## Important Notes
 * There is a delay of the Machine Agent Startup, so give it some time.
 
