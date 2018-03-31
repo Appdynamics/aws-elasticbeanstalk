@@ -1,4 +1,15 @@
 # AppDynamics Agent Deployment on AWS Elastic Beanstalk
+## Introduction
+This repository contains the logic to deploy AppDynamics Agents within an AWS Elastic Beanstalk environment. The standard Extension process of Elastic Beanstalk is used. The extension will be added by creating a folder called `.ebextensions` within your Application Folder. General Details can be found in the [.ebextensions Documentation].
+
+The steps performed by the Extensions could vary by technology but here is a general description:
+* Download of the Agent Bits
+* Execution of the Deployment Script
+  * Setting of the the Environment variables
+  * Extracting the Agent
+  * Configuration of the Application
+  * Startup of the Agent if needed
+
 ## Supported Technologies/Agents
 | Platform | Application Agent | Machine Agent | Analytics Agent |
 |:--------:|:-----------------:|:-------------:|:---------------:|
@@ -51,3 +62,4 @@
 
 [Environment Variables for Agent]: https://docs.appdynamics.com/display/latest/Use+Environment+Variables+for+Java+Agent+Settings
 [Analytics Agent]: https://docs.appdynamics.com/display/latest/Installing+Agent-Side+Components#InstallingAgent-SideComponents-InstallAnalyticsAgentonLinux
+[.ebextensions Documentation]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html
