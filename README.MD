@@ -26,7 +26,7 @@
 | APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT  | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_DEBUG                     | Will set the Agents Logging Level to Debug if true                  | No       | N/A       |
 ## Sample Deployment
-### Linux
+### Linux using Testing Script
 * Make sure you have `git` and `eb` (Elastic Beanstalk CLI) installed
 * Clone this Repository `git clone https://github.com/michaelenglert/aws-elasticbeanstalk.git`
 * Navigate to the Agent Combination you want to test `cd ./aws-elasticbeanstalk/<platform>-(machine)-(analytics)/testing`
