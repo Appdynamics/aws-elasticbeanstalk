@@ -11,8 +11,7 @@
 | `<platform>-(machine)-(analytics)`               | Platform and Agent specific scripts                             |
 | `<platform>-(machine)-(analytics)/.ebextensions` | Platform specific AWS Elastic Beanstalk Extension Configuration |
 | `<platform>-(machine)-(analytics)/testing`       | Testing Script for Linux                                        |
-## Java Platform
-### Supported Environment Variables
+## Supported Environment Variables
 | Variable                              | Description                                                         | Required | Default   |
 |---------------------------------------|---------------------------------------------------------------------|----------|-----------|
 | APPDYNAMICS_CONTROLLER_HOST_NAME      | [Environment Variables for Agent]                                   | Yes      | N/A       |
@@ -26,6 +25,15 @@
 | APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT  | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_DEBUG                     | Will set the Agents Logging Level to Debug if true                  | No       | N/A       |
+## Sample Deployment
+### Linux
+* Clone this Repository `git clone https://github.com/michaelenglert/aws-elasticbeanstalk.git`
+* Navigate to the Agent Combination you want to test `cd ./aws-elasticbeanstalk/<platform>-(machine)-(analytics)/testing`
+* Execute the `test.sh` script with the corresponding options
+  * e.g. `./test.sh -a <APP_NAME> -b <BASE_DIR> -e <ENV_NAME> -r <AWS_REGION> -i <AWS_INSTANCE_TYPE> -c <APPDYNAMICS_CONTROLLER_HOST_NAME> -p <APPDYNAMICS_CONTROLLER_PROTOCOL> -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY>`
+  * The script will prompt if you forget to specify all required options
+  * You can display the Usage Info by `./test.sh -h`
+  
 ## Important Notes
 * There is a delay of the Machine Agent Startup, so give it some time.
 
