@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PLATFORM=$(echo $PWD | sed -e 's/.*aws-elasticbeanstalk\/\(\w*\)-*.*\/testing.*/\1/g')
+PLATFORM="java"
 BEANSTALK_DIR=$(echo $PWD | sed -e 's/\(.*aws-elasticbeanstalk\)\/.*/\1/g')
 
 function checkPrerequs {
@@ -121,11 +121,10 @@ mkdir .ebextensions
 cp -r $BEANSTALK_DIR/_common/.ebextensions/nginx ./.ebextensions
 cp $BEANSTALK_DIR/$PLATFORM/.ebextensions/appd.config ./.ebextensions
 
-sed -i "s@APPDYNAMICS_CONTROLLER_HOST_NAME:@APPDYNAMICS_CONTROLLER_HOST_NAME: \"$APPDYNAMICS_CONTROLLER_HOST_NAME\"@" ./.ebextensions/appd.config
-sed -i "s@APPDYNAMICS_CONTROLLER_PORT:@APPDYNAMICS_CONTROLLER_PORT: \"$APPDYNAMICS_CONTROLLER_PORT\"@" ./.ebextensions/appd.config
-sed -i "s@APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:@APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: \"$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY\"@" ./.ebextensions/appd.config
-sed -i "s@APPDYNAMICS_AGENT_APPLICATION_NAME:@APPDYNAMICS_AGENT_APPLICATION_NAME: \"$APP_NAME\"@" ./.ebextensions/appd.config
-
+sed -i -e "s/APPDYNAMICS_CONTROLLER_HOST_NAME:/APPDYNAMICS_CONTROLLER_HOST_NAME: \"$APPDYNAMICS_CONTROLLER_HOST_NAME\"/" ./.ebextensions/appd.config
+sed -i -e "s/APPDYNAMICS_CONTROLLER_PORT:/APPDYNAMICS_CONTROLLER_PORT: \"$APPDYNAMICS_CONTROLLER_PORT\"/" ./.ebextensions/appd.config
+sed -i -e "s/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: \"$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY\"/" ./.ebextensions/appd.config
+sed -i -e "s/APPDYNAMICS_AGENT_APPLICATION_NAME:/APPDYNAMICS_AGENT_APPLICATION_NAME: \"$APP_NAME\"/" ./.ebextensions/appd.config
 
 git add ./
 git commit -m "eb"
