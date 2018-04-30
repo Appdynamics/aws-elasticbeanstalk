@@ -36,6 +36,12 @@ The steps performed by the Extensions could vary by technology but here is a gen
 | APPDYNAMICS_AGENT_GLOBAL_ACCOUNT_NAME | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_ANALYTICS_EVENT_ENDPOINT  | Setting required for Business iQ. See [Analytics Agent] for details | No       | N/A       |
 | APPDYNAMICS_DEBUG                     | Will set the Agents Logging Level to Debug if true                  | No       | N/A       |
+## Install Pre-requisites
+### MacOS
+Check [MacOS EB CLI Install] for details. Install using homebrew:
+* `brew update`
+* `brew install awsebcli`
+
 ## Deployment
 * Copy or create the `.ebextensions` Folder within your Apps root folder
 * Copy or create the `.ebextensions/appd.config` File into the previously created Folder
@@ -82,6 +88,7 @@ The steps performed by the Extensions could vary by technology but here is a gen
 * Other Technologies
 * Automated Jenkins testing
 
+[MacOS EB CLI Install]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install-osx.html
 [Environment Variables for Agent]: https://docs.appdynamics.com/display/latest/Use+Environment+Variables+for+Java+Agent+Settings
 [Analytics Agent]: https://docs.appdynamics.com/display/latest/Installing+Agent-Side+Components#InstallingAgent-SideComponents-InstallAnalyticsAgentonLinux
 [.ebextensions Documentation]: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html
