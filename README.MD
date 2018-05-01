@@ -43,8 +43,15 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
 * `brew install awsebcli`
 
 ## Deployment
+* Clone this repository
+  * `git clone https://github.com/michaelenglert/aws-elasticbeanstalk`
+* Navigate to your Application Folder or Clone your Application repository
+  * `git clone https://github.com/cloudfoundry-samples/spring-music`
+  * `cd spring-music`
 * Copy or create the `.ebextensions` Folder within your Apps root folder
+  * `mkdir .ebextensions`
 * Copy or create the `.ebextensions/appd.config` File into the previously created Folder
+  * `cp ../aws-elasticbeanstalk/java/.ebextensions/appd.config ./.ebextensions/`
 * Configure the `appd.config` File
   * Select the appropriate Agent Versions e.g.:  
     ```
@@ -57,7 +64,15 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
     APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:
     APPDYNAMICS_AGENT_APPLICATION_NAME:
     ```
+* Make sure you got your `Buildfile` (how your application bits are built) and `Procfile` (how your application is started)
+  * Buildfile e.g. `build: ./gradlew clean assemble`
+  * Procfile e.g. `web: java -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/staging-1.0.jar`
+* Commit your changes
+  * `git add ./`
+  * `git commit -m "my app with appdynamics"`
 * Deploy your Application
+  * `eb init <MY-NEW-EB-APP> -p java`
+  * `eb create <MY-NEW-EB-APP-ENV>`
 
 ## Sample Deployment
 ### Linux using Testing Script
