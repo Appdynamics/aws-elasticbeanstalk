@@ -25,12 +25,13 @@ function usage {
   -k <KEY> Optional - If not set no SSH key auth will be possible\n\t\t\
   -c <APPDYNAMICS_CONTROLLER_HOST_NAME> will be prompted if not provided\n\t\t\
   -p <APPDYNAMICS_CONTROLLER_PORT> will be prompted if not provided\n\t\t\
+  -S <APPDYNAMICS_CONTROLLER_SSL_ENABLED>\n\t\t\
   -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY> will be prompted if not provided\n\t\t"
   exit 1
 }
 
 function getOptions {
-  while getopts ":a:e:k:r:i:b:c:p:K:h" opt;
+  while getopts ":a:e:k:r:i:b:c:p:S:K:h" opt;
   do
    case "${opt}" in
      a) APP_NAME=${OPTARG}
@@ -56,6 +57,9 @@ function getOptions {
         ;;
      p) APPDYNAMICS_CONTROLLER_PORT=${OPTARG}
         echo "APPDYNAMICS_CONTROLLER_PORT=${APPDYNAMICS_CONTROLLER_PORT}"
+        ;;
+     S) APPDYNAMICS_CONTROLLER_SSL_ENABLED=${OPTARG}
+        echo "APPDYNAMICS_CONTROLLER_SSL_ENABLED=${APPDYNAMICS_CONTROLLER_SSL_ENABLED}"
         ;;
      K) APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${OPTARG}
         echo "APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY}"
@@ -108,24 +112,30 @@ cd spring-music
 if [[ -z ${REGION} ]] && [[ -z ${KEY} ]]; then
     eb init $APP_NAME -p $PLATFORM
 elif [[ -z ${REGION} ]]; then
-    eb init $APP_NAME -p $PLATFORM -r $REGION
+    eb init $APP_NAME -p $PLATFORM -k $KEY
 elif [[ -z ${KEY} ]]; then
-    eb init $APP_NAME -p $PLATFORM -r $KEY
+    eb init $APP_NAME -p $PLATFORM -r $REGION
 else
     eb init $APP_NAME -p $PLATFORM -r $REGION -k $KEY
 fi
 
-echo "build: gradle clean assemble" >> Buildfile
-echo 'web: java -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/spring-music.jar' >> Procfile
+echo "build: ./gradlew clean assemble" >> Buildfile
+echo 'web: java -Dserver.port=8080 -Dspring.profiles.active=in-memory -jar build/libs/staging-1.0.jar' >> Procfile
+
 mkdir .ebextensions
 cp -r $BEANSTALK_DIR/_common/.ebextensions/nginx ./.ebextensions
 cp $BEANSTALK_DIR/$PLATFORM/.ebextensions/appd.config ./.ebextensions
 
-sed -i "s/APPDYNAMICS_CONTROLLER_HOST_NAME:/APPDYNAMICS_CONTROLLER_HOST_NAME: \"$APPDYNAMICS_CONTROLLER_HOST_NAME\"/" ./.ebextensions/appd.config
-sed -i "s/APPDYNAMICS_CONTROLLER_PORT:/APPDYNAMICS_CONTROLLER_PORT: \"$APPDYNAMICS_CONTROLLER_PORT\"/" ./.ebextensions/appd.config
-sed -i "s/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: \"$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY\"/" ./.ebextensions/appd.config
-sed -i "s/APPDYNAMICS_AGENT_APPLICATION_NAME:/APPDYNAMICS_AGENT_APPLICATION_NAME: \"$APP_NAME\"/" ./.ebextensions/appd.config
+sed -i.bak "s/APPDYNAMICS_CONTROLLER_HOST_NAME:/APPDYNAMICS_CONTROLLER_HOST_NAME: \"$APPDYNAMICS_CONTROLLER_HOST_NAME\"/" ./.ebextensions/appd.config
+sed -i.bak "s/APPDYNAMICS_CONTROLLER_PORT:/APPDYNAMICS_CONTROLLER_PORT: \"$APPDYNAMICS_CONTROLLER_PORT\"/" ./.ebextensions/appd.config
+sed -i.bak "s/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY:/APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY: \"$APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY\"/" ./.ebextensions/appd.config
+sed -i.bak "s/APPDYNAMICS_AGENT_APPLICATION_NAME:/APPDYNAMICS_AGENT_APPLICATION_NAME: \"$APP_NAME\"/" ./.ebextensions/appd.config
 
+if [ -n "${APPDYNAMICS_CONTROLLER_SSL_ENABLED:+1}" ]; then
+    sed -i.bak "s/#APPDYNAMICS_CONTROLLER_SSL_ENABLED:/APPDYNAMICS_CONTROLLER_SSL_ENABLED: $APPDYNAMICS_CONTROLLER_SSL_ENABLED/" ./.ebextensions/appd.config
+fi
+
+find ./ -iname *.bak -exec /bin/bash -c "rm -rf {} " \;
 git add ./
 git commit -m "eb"
 
