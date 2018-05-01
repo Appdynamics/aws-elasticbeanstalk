@@ -100,6 +100,13 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
 ## Important Notes
 * There is a delay of the Machine Agent Startup, so give it some time.
 
+## Troubleshooting
+* Get all Elastic Beanstalk Log Files as `.zip`
+  * `eb logs -z`
+* Where to look
+  * Staging/Build/Deployment Errors `eb-activity.log`
+  * Application Logs `web-1.log` and `web-1.error.log` (Example for a Java web App)
+
 ## TODO
 * Source Rules for EB Log files
 * Other Technologies
