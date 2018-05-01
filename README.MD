@@ -50,6 +50,8 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
   * `cd spring-music`
 * Copy or create the `.ebextensions` Folder within your Apps root folder
   * `mkdir .ebextensions`
+* Depending on your application you might need to change the Nginx configuration
+  * `cp -r ../aws-elasticbeanstalk/_common/.ebextensions/nginx ./.ebextensions/`
 * Copy or create the `.ebextensions/appd.config` File into the previously created Folder
   * `cp ../aws-elasticbeanstalk/java/.ebextensions/appd.config ./.ebextensions/`
 * Configure the `appd.config` File
