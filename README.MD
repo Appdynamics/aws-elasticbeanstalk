@@ -44,7 +44,7 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
 
 ## Deployment
 * Clone this repository
-  * `git clone https://github.com/michaelenglert/aws-elasticbeanstalk`
+  * `git clone https://github.com/appdynamics/aws-elasticbeanstalk`
 * Navigate to your Application Folder or Clone your Application repository
   * `git clone https://github.com/cloudfoundry-samples/spring-music`
   * `cd spring-music`
@@ -79,7 +79,7 @@ Check [MacOS EB CLI Install] for details. Install using homebrew:
 ## Sample Deployment
 ### Linux using Testing Script
 * Make sure you have `git` and `eb` (Elastic Beanstalk CLI) installed
-* Clone this Repository `git clone https://github.com/michaelenglert/aws-elasticbeanstalk.git`
+* Clone this Repository `git clone https://github.com/appdynamics/aws-elasticbeanstalk.git`
 * Navigate to the Agent Combination you want to test `cd ./aws-elasticbeanstalk/<platform>-(machine)-(analytics)/testing`
 * Execute the `test.sh` script with the corresponding options
   * e.g. `./test.sh -a <APP_NAME> -b <BASE_DIR> -e <ENV_NAME> -r <AWS_REGION> -i <AWS_INSTANCE_TYPE> -c <APPDYNAMICS_CONTROLLER_HOST_NAME> -p <APPDYNAMICS_CONTROLLER_PROTOCOL> -K <APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY>`
